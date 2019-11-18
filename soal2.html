@@ -36,15 +36,14 @@ table, tr, td{
             <tbody id="tablebod">
     
             </tbody>
-            <h1 id="nouser">
-
-            </h1>
         </table>
         <br>
         <br>
-        <form>
-            <input type="button" value="log-out" onclick="logOut()">
-        </form>
+        <h1 id="nonuser">
+    
+        </h1>
+        <br>
+        <br>
 </body>
 <script>
 
@@ -90,6 +89,7 @@ var userList = [
                 </tr>
             `
         }
+        document.getElementById('nonuser').innerHTML = ' '
         document.getElementById('tablebod').innerHTML = `${output}
                 <tr>
                     <td></td>
@@ -103,7 +103,12 @@ var userList = [
                     </td>
                     <td><input type="text" id="newPoster"></td>
                     <td><input type="button" class="button" value="add to-do" onclick="addTodo()"></td>
-                </tr>`
+                </tr>
+                <br>
+                <br>
+                <form>
+                <input type="button" value="log-out" onclick="logOut()">
+                </form>`
     }
 
     function printmenuUser(){
@@ -120,7 +125,13 @@ var userList = [
                 </tr>
             `
         }
-        document.getElementById('tablebod').innerHTML = `${output}`
+        document.getElementById('tablebod').innerHTML = `${output}
+        <br>
+        <br>
+        <form>
+            <input type="button" value="log-out" onclick="logOut()">
+        </form>`
+        document.getElementById('nonuser').innerHTML = ' '
     }
 
 
@@ -284,28 +295,31 @@ var userList = [
                 if(c === 'admin'){
                     console.log('admin')
                     document.getElementById('textlogin').innerHTML = printmenuAdmin()
-           
-                }
-                else if(c === 'user'){
+                    document.getElementById('nonuser').innerHTML = ' '
+
+                }else if(c === 'user'){
                     console.log('user')
-                    document.getElementById('textlogin').innerHTML = printmenuUser()
-                 
-                }else{
-                    document.getElementById('nouser').innerHTML = `<h1>tidak terdaftar</h1>`
+                    document.getElementById('textlogin').innerHTML = printmenuUser()  
+                    document.getElementById('nonuser').innerHTML = ' '
+   
                 }            
+            }else{
+                document.getElementById('nonuser').innerHTML = `tidak terdaftar`
             }
         }   
     }
-
+    
     function logOut(){
-    var output = `
-            <h1 class="header">Madding</h1> 
-            <h3><input type="text" id="user" placeholder="username"></h3>
-            <h3><input type="text" id="pass" placeholder="password"></h3>
-            <h3><input type="button" value="Log-in" onclick="loginFunc()"></h3>
-            `
-    document.getElementById('textlogin').innerHTML = output
-    document.getElementById('tablebod').innerHTML = ''
+        var output = `
+        <h1 class="header">Madding</h1> 
+        <h3><input type="text" id="user" placeholder="username"></h3>
+        <h3><input type="text" id="pass" placeholder="password"></h3>
+        <h3><input type="button" value="Log-in" onclick="loginFunc()"></h3>
+        `
+        document.getElementById('textlogin').innerHTML = output
+        document.getElementById('tablebod').innerHTML = ''
+        document.getElementById('nonuser').innerHTML = ''
+    g
     }
 
 </script>
