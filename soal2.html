@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <title>UJIAN JC 11</title>
+</head>
+<style>
+table, tr, td{
+            border: 5px solid black;
+            border-collapse: collapse;
+            padding: 10px;
+            text-align: center;
+            width: 1000px;
+
+        }
+</style>
+<body>
+    <center>
+        <form id="textlogin">
+            <h1 class="header">Madding</h1>
+            <h3><input type="text" id="user" placeholder="username"></h3>
+            <h3><input type="text" id="pass" placeholder="password"></h3>
+            <h3><input type="button" value="Log-in" onclick="loginFunc()"></h3>
+        </form>
+        <br>
+        <table>
+            <thead>
+                <tr>
+                    <td>Number</td>
+                    <td>Kegiatan</td>
+                    <td>Hari</td>
+                    <td>Poster</td>
+                    <td>Action</td>
+                </tr>
+            </thead>
+            <tbody id="tablebod">
+    
+            </tbody>
+            <h1 id="nouser">
+
+            </h1>
+        </table>
+        <br>
+        <br>
+        <form>
+            <input type="button" value="log-out" onclick="logOut()">
+        </form>
+</body>
+<script>
+
+class madding{
+    constructor(kegiatan,hari,poster){
+        this.kegiatan = kegiatan
+        this.hari = hari
+        this.poster = poster
+    }
+}
+
+var menu = [
+    new madding('lari','senin','x'),
+    new madding('estafet','selasa','y')
+]
+
+class userLogin{
+    constructor(user,pass,role){
+        this.user = user
+        this.pass = pass
+        this.role = role
+    }
+}
+
+var userList = [
+    new userLogin('admin','admin','admin'),
+    new userLogin('user','user','user')
+]
+
+    function printmenuAdmin(){
+        var output = ''
+        for(var i = 0;i<menu.length;i++){
+            output += `
+                <tr id=${i}>
+                    <td>${i+1}</td>
+                    <td>${menu[i].kegiatan}</td>        
+                    <td>${menu[i].hari}</td>
+                    <td><img src = "${menu[i].poster}" alt='foto keg.' width="100px"></td>        
+                    <td>
+                        <input type="button" class="button" id="klikan" value="delete" onclick="deleteKeg(${i})">
+                        <input type="button" class="button" id="klikan" value="edit" onclick="editKeg(${i})">
+                    </td>
+                </tr>
+            `
+        }
+        document.getElementById('tablebod').innerHTML = `${output}
+                <tr>
+                    <td></td>
+                    <td><input type="text" id="newKeg"></td>
+                    <td>
+                    <select name="dropdown" id="newHari">
+                            <option value="senin">senin</option>
+                            <option value="selasa">selasa</option>
+                            <option value="rabu" selected>rabu</option>
+                    </select>
+                    </td>
+                    <td><input type="text" id="newPoster"></td>
+                    <td><input type="button" class="button" value="add to-do" onclick="addTodo()"></td>
+                </tr>`
+    }
+
+    function printmenuUser(){
+        var output = ''
+        for(var i = 0;i<menu.length;i++){
+            output += `
+                <tr id=${i}>
+                    <td>${i+1}</td>
+                    <td>${menu[i].kegiatan}</td>        
+                    <td>${menu[i].hari}</td>
+                    <td><img src = "${menu[i].poster}" alt='foto keg.' width="100px"></td>        
+                    <td>
+                    </td>
+                </tr>
+            `
+        }
+        document.getElementById('tablebod').innerHTML = `${output}`
+    }
+
+
+    function editKeg(x){
+        var output = ''
+        for(var y = 0;y<menu.length;y++){
+            if(y == x){
+            output += `
+                <tr id=${x}>
+                    <td>
+                    ${x+1}
+                    </td>
+                    <td>
+                    <input type="text" id="textKegiatan">
+                    </td>
+                    <td>
+                        <select name="dropdown" id="option">
+                            <option value="senin">senin</option>
+                            <option value="selasa">selasa</option>
+                            <option value="rabu" selected>rabu</option>
+                        </select>
+                    </td>
+                    <td>
+                    <input type="text" id="textPoster">
+                    </td>
+                    <td>
+                        <input type="button" class="button" id="klikan" value="Save" onclick="newEdit(${x})">
+                        <input type="button" class="button" id="klikan" value="Cancel" onclick="editCancel()">
+                    </td>
+                </tr>
+            `
+            }else{
+                output += `
+                <tr id=${y}>
+                    <td>${y+1}</td>
+                    <td>${menu[y].kegiatan}</td>        
+                    <td>${menu[y].hari}</td>
+                    <td><img src = "${menu[y].poster}" alt='foto keg.' width="100px"></td>        
+                    <td>
+                        <input type="button" class="button" id="klikan" value="delete" onclick="deleteKeg(${y})">
+                        <input type="button" class="button" id="klikan" value="edit" onclick="editKeg(${y})">
+                    </td>
+                </tr>
+            `
+            }
+        }
+        document.getElementById("tablebod").innerHTML = `${output}
+
+            <tr>
+                <td></td>
+                <td><input type="text" id="newKeg"></td>
+                <td>
+                <select name="dropdown" id="newHari">
+                            <option value="senin">senin</option>
+                            <option value="selasa">selasa</option>
+                            <option value="rabu" selected>rabu</option>
+                </select>
+                </td>
+                <td><input type="text" id="newPoster"></td>
+                <td><input type="button" class="button" value="add to-do" onclick="addTodo()"></td>
+            </tr>
+        
+        `
+    }
+
+    function newEdit(x){
+        var kegEdit = document.getElementById('textKegiatan').value
+        var hariEdit = document.getElementById('option').value
+        var posterEdit = document.getElementById('textPoster').value
+        if(kegEdit != ''){
+            menu[x].kegiatan = kegEdit
+        }
+        if(hariEdit != ''){
+            menu[x].hari = hariEdit
+        }
+        if(posterEdit != ''){
+            menu[x].poster = posterEdit
+        }
+        printmenuAdmin()
+
+    }
+
+    function editCancel(){
+        printmenuAdmin()
+    }
+
+    function deleteKeg(x){
+        var output = ''
+        for(var y = 0;y<menu.length;y++){
+            if(y == x){
+            output += `
+                <tr id=${y}>
+                    <td>${y+1}</td>
+                    <td>${menu[y].kegiatan}</td>        
+                    <td>${menu[y].hari}</td>
+                    <td><img src = "${menu[y].poster}" alt='foto keg.' width="100px"></td>        
+                    <td>
+                        <input type="button" class="button" id="klikan" value="yes" onclick="yesDel(${x})">
+                        <input type="button" class="button" id="klikan" value="no" onclick="noDel(${x})">
+                    </td>
+                </tr>
+            `
+            }else{
+                output += `
+                <tr id=${y}>
+                    <td>${y+1}</td>
+                    <td>${menu[y].kegiatan}</td>        
+                    <td>${menu[y].hari}</td>
+                    <td><img src = "${menu[y].poster}" alt='foto keg.' width="100px"></td>        
+                    <td>
+                        <input type="button" class="button" id="klikan" value="delete" onclick="deleteKeg(${y})">
+                        <input type="button" class="button" id="klikan" value="edit" onclick="editKeg(${y})">
+                    </td>
+                </tr>
+            `
+            }
+        }
+        document.getElementById("tablebod").innerHTML = `${output}
+
+            <tr>
+                <td></td>
+                <td><input type="text" id="newKeg"></td>
+                <td>
+                <select name="dropdown" id="newHari">
+                            <option value="senin">senin</option>
+                            <option value="selasa">selasa</option>
+                            <option value="rabu" selected>rabu</option>
+                </select>
+                </td>
+                <td><input type="text" id="newPoster"></td>
+                <td><input type="button" class="button" value="add to-do" onclick="addTodo()"></td>
+            </tr>
+        
+        `
+    }
+
+    function yesDel(x){
+        menu.splice(x,1)
+        printmenuAdmin()
+    }
+
+    function noDel(){
+        printmenuAdmin()
+    }
+
+    function addTodo(){
+        var newKeg = document.getElementById('newKeg').value
+        var newHari = document.getElementById('newHari').value
+        var newPoster = document.getElementById('newPoster').value
+        var tambahanKegiatan = new madding(newKeg,newHari,newPoster)
+        menu.push(tambahanKegiatan)
+        printmenuAdmin()
+    }
+
+    function loginFunc(){
+        var a = document.getElementById("user").value
+        var b = document.getElementById("pass").value
+        for(i=0; i<userList.length;i++){
+            if(a===userList[i].user && b===userList[i].pass){
+                var c = userList[i].role
+                if(c === 'admin'){
+                    console.log('admin')
+                    document.getElementById('textlogin').innerHTML = printmenuAdmin()
+           
+                }
+                else if(c === 'user'){
+                    console.log('user')
+                    document.getElementById('textlogin').innerHTML = printmenuUser()
+                 
+                }else{
+                    document.getElementById('nouser').innerHTML = `<h1>tidak terdaftar</h1>`
+                }            
+            }
+        }   
+    }
+
+    function logOut(){
+    var output = `
+            <h1 class="header">Madding</h1> 
+            <h3><input type="text" id="user" placeholder="username"></h3>
+            <h3><input type="text" id="pass" placeholder="password"></h3>
+            <h3><input type="button" value="Log-in" onclick="loginFunc()"></h3>
+            `
+    document.getElementById('textlogin').innerHTML = output
+    document.getElementById('tablebod').innerHTML = ''
+    }
+
+</script>
+</html>
